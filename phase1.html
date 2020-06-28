@@ -1,0 +1,39 @@
+<html>
+
+<script>
+function updateClock() {
+    var now = new Date();
+    
+    var hh = now.getHours();
+    var mm = now.getMinutes();
+    var ss = now.getSeconds();
+
+    var hhSpan = document.getElementById("hh");
+    var mmSpan = document.getElementById("mm");
+    var ssSpan = document.getElementById("ss");
+
+    hhSpan.innerHTML = formatToDoubleDigit(hh);
+    mmSpan.innerHTML = formatToDoubleDigit(mm);
+    ssSpan.innerHTML = formatToDoubleDigit(ss);
+
+    setTimeout(updateClock, 1000);
+}
+
+function start() {
+    updateClock();
+}
+
+function formatToDoubleDigit(value) {
+    return value < 10 ? "0" + value : value;
+}
+</script>
+
+<body style="margin: 50px; text-align: center;" onload="start()">
+    <p style="font-size: 18px; font-weight: bold;">Simple Digital Clock</p>
+    <p>
+        <span id="hh">hh</span> :
+        <span id="mm">mm</span> :
+        <span id="ss">ss</span>
+    </p>
+</body>
+</html>
