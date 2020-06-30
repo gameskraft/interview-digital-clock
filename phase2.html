@@ -1,0 +1,58 @@
+<html>
+
+<script>
+    var apiUrl = "http://worldclockapi.com/api/json/utc/now";
+
+    function fetchCurrentTime() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var now = new Date(JSON.parse(this.responseText).currentFileTime / 10000);
+                updateClock(now);
+            }
+        };
+        xhttp.open("GET", apiUrl, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+        xhttp.send();
+
+        setTimeout(fetchCurrentTime, 1000);
+    }
+
+    function updateClock(now) {
+        var hh = now.getHours();
+        var mm = now.getMinutes();
+        var ss = now.getSeconds();
+
+        var hhSpan = document.getElementById("hh");
+        var mmSpan = document.getElementById("mm");
+        var ssSpan = document.getElementById("ss");
+        
+        // Note: innerText fits better than innerHTML here
+        hhSpan.innerText = formatToDoubleDigit(hh);
+        mmSpan.innerText = formatToDoubleDigit(mm);
+        ssSpan.innerText = formatToDoubleDigit(ss);
+    }
+
+    function start() {
+        fetchCurrentTime();
+
+        // Adding the footer
+        document.getElementById("apiUrl").innerText = apiUrl;
+    }
+
+    function formatToDoubleDigit(value) {
+        return value < 10 ? "0" + value : value;
+    }
+</script>
+
+<body style="margin: 50px; text-align: center;" onload="start()">
+    <p style="font-size: 18px; font-weight: bold;">API Based Digital Clock</p>
+    <p>
+        <span id="hh">hh</span> :
+        <span id="mm">mm</span> :
+        <span id="ss">ss</span>
+    </p>
+    <p style="font-size: 14px; color: grey;">Using <span id="apiUrl"></span></p>
+</body>
+</html>
